@@ -1,0 +1,19 @@
+<ion-view >
+	<div class="bar bar-header item-input-inset head-title">
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="vm.goBack()"></button>
+        <h1 class="title">订单</h1>
+    </div>
+    <ion-content style="margin-top: 44px;">
+    	<div class="list list-a" ng-repeat="item in vm.listData">
+    		<h2>取餐日期：<span ng-bind="item.dateTake"></span></h2>
+    		<a class="item item-thumbnail-left" ng-repeat="orderList in item.orderList">
+		      <img ng-src="{{ orderList.goodsPic }}">
+		      <p>订单号：<span ng-bind="orderList.orderId"></span></p>
+		      <p>下单时间：<span ng-bind="orderList.dateOrder"></span> <span style="float: right;"> ￥ {{ orderList.goodsPrice *  orderList.goodsNum}}</span></p>
+		      <p>{{ orderList.goodsName }} X {{ orderList.goodsNum }} <button ng-if="item.dateTake | fromatIsShow" class="button button-calm btn-dev" ng-click="vm.cancelOrder(orderList.orderId,orderList.goodsId)">取消订单</button></p>
+		    </a>
+		    <h3>合计：<span ng-bind="item.sunGoods"></span></h3>
+		</div>
+		<div ng-if="vm.isAction" class="select-order-listf" ng-click="vm.getSelect()">查看三个月前订单<i class="ion-chevron-down"></i></div>
+	</ion-content>
+</ion-view>

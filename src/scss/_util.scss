@@ -1,0 +1,31 @@
+﻿/*public class*/
+.hide ,.ng-cloak {
+    display: none;
+}
+.show {
+    display: block;
+}
+.text-left {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.pull-left {
+    float: left;
+}
+.pull-right {
+    float: right;
+}
+.clearfix {
+    *zoom: 1;
+    &:after {
+        height: 0;
+        content: " ";
+        clear: both;
+        display: block;
+    }
+}

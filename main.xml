@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mainAPP id="poMpyHxO7XFQjSJ0QnKduOQj" versionCode="1" versionName="2.0">
+    <application icon="" name="HR" theme="no_title">
+        <main name="index.html">
+            <data name=""/>
+        </main>
+        <receiver name=""/>
+    </application>
+    <uses-sdk minSdkVersion="0" targetSdkVersion="0"/>
+    <use-permission name="LIGHT_USER_ALL" />
+</mainAPP>

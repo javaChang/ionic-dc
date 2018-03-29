@@ -1,0 +1,114 @@
+<ion-view>
+    <div class="bar bar-header item-input-inset head-title">
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="vm.closeApp()"></button>
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search"  ng-model="vm.searchVal" placeholder="想吃什么搜一搜" style="text-align: center;" ng-keydown="vm.searchList()">
+        </label>
+        <button class="button button-icon icon head-dd" ng-click="vm.goOrderList()"><img src="img/order.png">订单</button>
+    </div>
+    <ion-content style="margin-top: 43px;" scroll="false" overflow-scroll="true" >
+        <div class="content-div-time" ng-click="vm.dateOpen()">
+            取餐日期：{{ vm.dateShopping }} <i class="ion-chevron-down"></i>
+        </div>
+        <div class="row">
+            <div class="col col-20">
+                <ul class="content-ul-col">
+                    <li ng-class="{true:'action',false:''}[vm.goodTypeStaus == $index]" ng-repeat="item in vm.listGoodsType">
+                       
+                        <b ng-bind="item.goodsClassL" ng-click="vm.gotoGoods($index)"></b>
+                        <i class="tip" ng-if="item.goodsShoppingSum > 0" ng-bind="item.goodsShoppingSum"></i>
+                        <dl>
+                            <dd ng-repeat="itemGoodsS in item.goodsClassSList" ng-class="{true: 'action-dd',false:''}[vm.goodTypeClassLStaus == $index]" ng-bind="itemGoodsS.goodsClassS" ng-click="vm.gotoBottom(itemGoodsS.goodsClassSId,$index)"></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+            <div class="col col-80 col-80-item">
+                <ion-scroll delegate-handle="small" style="height: calc(100% - 80px); margin-top: 1px;">
+                    <div class="list" ng-repeat="item in vm.listType">
+                        <div class="item item-divider item-title" id="{{ item.titleId }}">
+                            {{ item.titleName}} <span>图片仅供参考，以图片下文字描述为准</span>
+                        </div>
+                        <div class="item item-thumbnail-left" ng-repeat="itemList in item.listItemDate">
+                            <img ng-src="{{ itemList.goodsPic }}" ng-click="vm.popupImgShow(itemList)">
+                            <h2 ng-bind="itemList.goodsName"></h2>
+                            <p ng-bind="itemList.goodsExp" ng-if="itemList.goodsExp != 'null'"></p>
+                            <p  ng-if="itemList.goodsExp == 'null'">&nbsp;</p>
+                            <p>库存：<b ng-bind="itemList.outGoodsCount"></b> 份   <span ng-if="itemList.goodsLimit > 0">每人限购<b ng-bind="itemList.goodsLimit"></b>份</span></p>
+                            <p>
+                                <span >￥{{ itemList.goodsPrice }}</span>
+                                <i class="purchase-add" ng-if="itemList.outGoodsCount > 0 && itemList.goodsNum < itemList.goodsLimit" ng-click="vm.purchaseAdd(itemList,$index)"></i>
+                                <i class="purchase-beyond" ng-if="itemList.goodsInv <= 0 || itemList.goodsNum >= itemList.goodsLimit"></i>
+                                <b class="purchase-b" ng-if="itemList.goodsNum > 0" ng-bind="itemList.goodsNum"></b>
+                                <i class="purchase-reduce" ng-if="itemList.goodsNum > 0 " ng-click="vm.purchaseReduce(itemList,$index)"></i>
+                            </p>
+                        </div>
+                </div>
+                </ion-scroll>
+            </div>
+        </div>
+    </ion-content>
+    <div class="div-popup" ng-if="vm.isPopupShow == true" ng-click="vm.popupShow()">
+    </div>
+    <ul class="list div-popup-list" ng-if="vm.isPopupShow == true">
+        <li class="item">
+            已选购商品&nbsp;&nbsp;&nbsp;(共<b ng-bind="vm.shoppingNum"></b>件)
+            <span ng-click="vm.clearShoppingList()"><i class="i-delete"></i>清空</span>
+        </li>
+        <li class="item item-li" ng-if="vm.shoppingList.length <= 0">
+            你还没有选购商品
+        </li>
+        <li class="item item-li" ng-repeat="item in vm.shoppingList">
+            {{ item.goodsName }} 
+            <span ng-if="item.goodsLimit > 0">每人限购<b ng-bind="item.goodsLimit"></b>份</span>
+            <span >￥{{ item.goodsPrice }}</span>
+            <i class="purchase-add" ng-if="item.goodsInv > 0 && item.goodsNum < item.goodsLimit" ng-click="vm.purchaseAdd(item,$index)"></i>
+            <i class="purchase-beyond" ng-if="item.goodsInv <= 0 || item.goodsNum >= item.goodsLimit"></i>
+            <b class="purchase-b" ng-bind="item.goodsNum"></b>
+            <i class="purchase-reduce" ng-if="item.goodsNum > 0 " ng-click="vm.purchaseReduce(item,$index)"></i>
+        </li>
+    </ul>  
+    <div ng-if="vm.isImgShow == true" class="div-popup-img" ng-click="vm.popupImgShow()"> 
+    </div>
+    <div class="popupImg" ng-if="vm.isImgShow == true">
+        <div class="popup-bodyImg">
+            <img ng-src="{{ vm.popuData.goodsPic }}">
+            <!-- <div class="poput-body-title">
+                <span>鸭血汤+牛肉+羊肉+小笼包</span>
+                <span>送蒸鸡蛋</span> 
+            </div> -->
+            <p ng-bind="vm.popuData.goodsName"></p>
+            <p class="popup-body-p">库存：<b ng-bind="vm.popuData.goodsInv"></b> 份 <span ng-if="vm.popuData.goodsLimit > 0">每人限购<b ng-bind="vm.popuData.goodsLimit"></b>份</span></p>
+            <p>
+                <span>￥{{ vm.popuData.goodsPrice }}</span>
+                <i class="purchase-add" ng-if="vm.popuData.goodsInv > 0 && vm.popuData.goodsNum < vm.popuData.goodsLimit" ng-click="vm.purchaseAdd(vm.popuData,$index)"></i>
+                <i class="purchase-beyond" ng-if="vm.popuData.goodsInv <= 0 || vm.popuData.goodsNum >= vm.popuData.goodsLimit"></i>
+                <b class="purchase-b" ng-if="vm.popuData.goodsNum > 0" ng-bind="vm.popuData.goodsNum"></b>
+                <i class="purchase-reduce" ng-if="vm.popuData.goodsNum > 0 " ng-click="vm.purchaseReduce(vm.popuData,$index)"></i>
+            </p>
+        </div>
+    </div>
+
+    <div class="bar bar-footer" ng-if="vm.shoppingNum > 0">
+        <div ng-click="vm.popupShow()">
+            <img class="img-action" src="img/shoppingCart.png">
+            <i class="tip" ng-bind="vm.shoppingNum"></i>
+        </div>
+        <div class="bar-footer-div-money">
+            ￥<b ng-bind="vm.sumMoney.toFixed(2)"></b>
+        </div>
+        <span ng-click="vm.goSettlement()">去结算</span>
+    </div>
+
+    <div class="bar bar-footer" ng-if="vm.shoppingNum <= 0">
+        <div>
+            <img src="img/shoppingCartNo.png">
+            <i class="tip" ng-if="vm.shoppingNum < 0" ng-bind="vm.shoppingNum"></i>
+        </div>
+        <div class="bar-footer-div-money" style="color: #b6b6b6;">
+            <b>未选购商品</b>
+        </div>
+        <span style="background: #7d7d7d;color: #b6b6b6;">去结算</span>
+    </div>
+</ion-view>

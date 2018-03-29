@@ -1,0 +1,21 @@
+<ion-view style="background: #dddddd;">
+	<div class="bar bar-header item-input-inset head-title">
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="vm.goBack()"></button>
+        <h1 class="title">确认订单</h1>
+    </div>
+    <ion-content style="margin-top: 44px;">
+      	<div class="content-settlement">取餐日期：<span ng-bind="vm.shopDate"></span></div>
+      	<div class="content-settlement-title">已选商品：</div>
+      	<ul class="content-settlement-ul">
+      		<li ng-repeat="item in vm.shopList">
+      			<img ng-src="{{ item.goodsPic }} "> <b ng-bind="item.goodsName"></b> <span>￥{{ item.goodsPrice *  item.goodsNum }}</span><span>x{{ item.goodsNum }}</span>
+      		</li>
+      	</ul>
+    </ion-content>
+    <div class="bar bar-footer">
+        <div class="bar-footer-settlement-money">
+            总金额：￥<b ng-bind="vm.money"></b>
+        </div>
+        <span ng-click="vm.submitShopping()">确认订单</span>
+    </div>
+</ion-view>
