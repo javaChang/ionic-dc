@@ -56,8 +56,8 @@
                    
                    
 
-                    // $rootScope.userId = 'jifz';
-                    // $rootScope.userName = '吉凤梓';
+                    $rootScope.userId = 'jifz';
+                    $rootScope.userName = '吉凤梓';
                     // $rootScope.shopDate = '2018-03-23';
 
                    if($rootScope.userId == undefined){
