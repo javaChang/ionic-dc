@@ -62,20 +62,23 @@
                         'goodsNum': orderList[i].goodsNum,
                         'dateOrder': orderList[i].dateOrder.substring(0,orderList[i].dateOrder.length - 2)
                     };
-                    if(vm.listData.length <= 0){
-                        vm.listData.push(dataList);
-                        vm.listData[0].orderList.push(orderDeatail);
-                    }else{
-                        var isListData = true;
-                        for(var j = 0 ; j < vm.listData.length ; j ++){
-                            if(vm.listData[j].orderId == orderList[i].orderId){
-                                isListData = false;
-                                vm.listData[j].orderList.push(orderDeatail);
-                            }
-                        }
-                        if(isListData){
+
+                    if(orderList[i].orderStatus == 1){
+                        if(vm.listData.length <= 0){
                             vm.listData.push(dataList);
-                            vm.listData[vm.listData.length - 1].orderList.push(orderDeatail);
+                            vm.listData[0].orderList.push(orderDeatail);
+                        }else{
+                            var isListData = true;
+                            for(var j = 0 ; j < vm.listData.length ; j ++){
+                                if(vm.listData[j].orderId == orderList[i].orderId){
+                                    isListData = false;
+                                    vm.listData[j].orderList.push(orderDeatail);
+                                }
+                            }
+                            if(isListData){
+                                vm.listData.push(dataList);
+                                vm.listData[vm.listData.length - 1].orderList.push(orderDeatail);
+                            }
                         }
                     }
                 }
@@ -141,20 +144,23 @@
                         'goodsNum': orderList[i].goodsNum,
                         'dateOrder': orderList[i].dateOrder.substring(0,orderList[i].dateOrder.length - 2)
                     };
-                    if(vm.listData.length <= 0){
-                        vm.listData.push(dataList);
-                        vm.listData[0].orderList.push(orderDeatail);
-                    }else{
-                        var isListData = true;
-                        for(var j = 0 ; j < vm.listData.length ; j ++){
-                            if(vm.listData[j].orderId == orderList[i].orderId){
-                                isListData = false;
-                                vm.listData[j].orderList.push(orderDeatail);
-                            }
-                        }
-                        if(isListData){
+                    
+                    if(orderList[i].orderStatus == 1){
+                        if(vm.listData.length <= 0){
                             vm.listData.push(dataList);
-                            vm.listData[vm.listData.length - 1].orderList.push(orderDeatail);
+                            vm.listData[0].orderList.push(orderDeatail);
+                        }else{
+                            var isListData = true;
+                            for(var j = 0 ; j < vm.listData.length ; j ++){
+                                if(vm.listData[j].orderId == orderList[i].orderId){
+                                    isListData = false;
+                                    vm.listData[j].orderList.push(orderDeatail);
+                                }
+                            }
+                            if(isListData){
+                                vm.listData.push(dataList);
+                                vm.listData[vm.listData.length - 1].orderList.push(orderDeatail);
+                            }
                         }
                     }
                 }

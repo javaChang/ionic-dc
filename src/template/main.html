@@ -26,7 +26,8 @@
             </div>
             <div class="col col-80 col-80-item">
                 <ion-scroll delegate-handle="small" style="height: calc(100% - 80px); margin-top: 1px;">
-                    <div class="list" ng-repeat="item in vm.listType">
+                    <div class="list-no" ng-if="vm.listType.length <= 0 "> 暂无最新菜单</div>
+                    <div class="list" ng-repeat="item in vm.listType" ng-if="vm.listType.length > 0 ">
                         <div class="item item-divider item-title" id="{{ item.titleId }}">
                             {{ item.titleName}} <span>图片仅供参考，以图片下文字描述为准</span>
                         </div>

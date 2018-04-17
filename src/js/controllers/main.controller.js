@@ -5,8 +5,8 @@
 		.module('app')
 		.controller('MainCtrl', MainCtrl);
 
-	MainCtrl.$inject = ['$scope', '$rootScope', 'dataService', '$ionicScrollDelegate', '$state', '$filter', 'ionicDatePicker', '$ionicLoading', '$location', '$anchorScroll', 'serviceImgUrl'];
-	function MainCtrl($scope,  $rootScope, dataService, $ionicScrollDelegate, $state, $filter, ionicDatePicker, $ionicLoading, $location, $anchorScroll, serviceImgUrl) {
+	MainCtrl.$inject = ['$scope', '$rootScope', 'dataService', '$ionicScrollDelegate', '$state', '$filter', 'ionicDatePicker', '$ionicLoading', '$location', '$anchorScroll', 'serviceImgUrl', '$ionicPopup'];
+	function MainCtrl($scope,  $rootScope, dataService, $ionicScrollDelegate, $state, $filter, ionicDatePicker, $ionicLoading, $location, $anchorScroll, serviceImgUrl, $ionicPopup) {
 		var vm = this;
         
                 vm.init = init; // 初始化函数
@@ -30,6 +30,7 @@
                 vm.shoppingList = [];  // 商品列表
                 vm.goodTypeStaus = 0;  // 大类初始化
                 vm.goodTypeClassLStaus = 0; //小类初始化
+                vm.toDay = new Date();   
                 // 调用初始化
                 vm.init();
 
@@ -46,7 +47,8 @@
                    }else{
                       var dd = new Date();  
                       if(dd.getHours() >= 9){
-                        dd = dd.setDate(dd.getDate() + 1);   
+                        dd = dd.setDate(dd.getDate() + 1);
+                        vm.toDay = vm.toDay.setDate(vm.toDay.getDate() + 1);
                       }
                       dd = $filter('date')(dd, 'yyyy-MM-dd EEE HH:mm:ss');
                       // console.log(dd);
@@ -56,8 +58,10 @@
                    
                    
 
-                    $rootScope.userId = 'jifz';
-                    $rootScope.userName = '吉凤梓';
+                    // $rootScope.userId = 'jifz';
+                    // $rootScope.userName = '吉凤梓';
+                    // $rootScope.userId = 'yanghui';
+                    // $rootScope.userName = '杨晖';
                     // $rootScope.shopDate = '2018-03-23';
 
                    if($rootScope.userId == undefined){
@@ -71,14 +75,19 @@
 
                               dataService.getUserValidation($rootScope.userId,$rootScope.userName,function(msg){
                                   msg = eval('(' + msg + ')');
-                                  if(msg[0].error != 'undefined'){
-                                      vm.getDate();
+
+                                  if(msg[0].error == undefined){
+                                     vm.getDate();
                                   }else{
-                                    $ionicLoading.show({
-                                        template: msg[0].error,
-                                        noBackdrop: true,
-                                        duration: 2000
-                                    });
+                                    var alertPopup = $ionicPopup.alert({
+                                        title: '提示',
+                                        template: '<span style="font-size:15px;">用户不存在！请联系系统管理员！</span>',
+                                        okText: '确定',
+                                        okType: 'button-submit'
+                                     });
+                                     alertPopup.then(function(res) {
+                                       closeApp();
+                                     });
                                   }
                               },function(err){
 
@@ -92,6 +101,28 @@
                         }
                       });
                    }else{
+                      // dataService.getUserValidation($rootScope.userId,$rootScope.userName,function(msg){
+                      //     msg = eval('(' + msg + ')');
+                      //     console.log(msg[0].error);
+                      //     if(msg[0].error == undefined){
+                      //       vm.getDate();
+                      //     }else{
+                      //       var alertPopup = $ionicPopup.alert({
+                      //          title: '提示',
+                      //          template: '<span style="font-size:15px;">用户不存在！请联系系统管理员！</span>',
+                      //          okText: '确定',
+                      //          okType: 'button-submit'
+                      //        });
+                      //        alertPopup.then(function(res) {
+                      //          closeApp();
+                      //        });
+                      //     }
+                      // },function(err){
+
+                      // });
+
+
+
                       if($rootScope.shoppingNum != undefined && $rootScope.isSbumit == false){
                           vm.shoppingNum = $rootScope.shoppingNum;
                           vm.sumMoney = $rootScope.sumMoney;
@@ -120,7 +151,7 @@
                           vm.listType = [];
                           vm.listGoodsType = [];
                           vm.listItem = eval('(' + msg + ')');
-                          console.log(JSON.stringify(vm.listItem));
+                          // console.log(JSON.stringify(vm.listItem));
 
                           for(var i = 0 ; i < vm.listItem.length ; i ++){
                               var goodsType = {
@@ -424,9 +455,9 @@
 
                         });
                       },
-                      from: new Date(),
+                      from: vm.toDay,
                       to: new Date(new Date().getFullYear(), 11, 31),
-                      inputDate: new Date(),
+                      inputDate: new Date(vm.toDay),
                       mondayFirst: true,
                       closeOnSelect: false,
                       dateFormat: 'yyyy-MM-dd',
